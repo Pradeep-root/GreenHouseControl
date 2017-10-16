@@ -337,9 +337,11 @@ public class BluetoothSerial {
            /* PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
             result.setKeepCallback(true);
             callbackContext.sendPluginResult(result);*/
+            callback.connectedDevice(true);
 
         } else {
            // callbackContext.error("Could not connect to " + macAddress);
+            callback.connectedDevice(false);
         }
     }
 

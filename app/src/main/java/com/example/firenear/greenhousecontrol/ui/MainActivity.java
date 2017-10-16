@@ -1,6 +1,9 @@
 package com.example.firenear.greenhousecontrol.ui;
 
+import android.bluetooth.BluetoothDevice;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +18,23 @@ import android.widget.Toast;
 import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.bluetooth.BlueToothCallback;
 import com.example.firenear.greenhousecontrol.bluetooth.BluetoothSerial;
+import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements BlueToothCallback {
+import java.util.Set;
+import java.util.UUID;
+
+import co.lujun.lmbluetoothsdk.BluetoothController;
+import co.lujun.lmbluetoothsdk.base.BluetoothListener;
+
+public class MainActivity extends AppCompatActivity {
 
     private BluetoothSerial bluetoothSerial;
     private DrawerLayout drawerLayout;
@@ -33,7 +48,71 @@ public class MainActivity extends AppCompatActivity implements BlueToothCallback
         setSupportActionBar(toolbar);
         initNavigationDrawer();
         bluetoothSerial = BluetoothSerial.newInstance();
-        scanDevice();
+
+        BluetoothConfiguration config = new BluetoothConfiguration();
+        config.context = getApplicationContext();
+        config.bluetoothServiceClass = BluetoothClassicService.class; // BluetoothClassicService.class or BluetoothLeService.class
+        config.bufferSize = 1024;
+        config.characterDelimiter = '\n';
+        config.deviceName = "GreenHouseControl";
+        config.callListenersInMainThread = true;
+
+        // Bluetooth Classic
+        config.uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+        BluetoothService.init(config);
+
+        final BluetoothService service = BluetoothService.getDefaultInstance();
+
+        service.startScan();
+
+        service.setOnScanCallback(new BluetoothService.OnBluetoothScanCallback() {
+            @Override
+            public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int i) {
+                Log.d("onDeviceDiscovered", bluetoothDevice.getName());
+                service.connect(bluetoothDevice);
+
+            }
+
+            @Override
+            public void onStartScan() {
+                Log.d("onDeviceDiscovered", "onDeviceDiscovered");
+            }
+
+            @Override
+            public void onStopScan() {
+                Log.d("onDeviceDiscovered", "onDeviceDiscovered");
+            }
+        });
+
+        service.setOnEventCallback(new BluetoothService.OnBluetoothEventCallback() {
+            @Override
+            public void onDataRead(byte[] bytes, int i) {
+
+            }
+
+            @Override
+            public void onStatusChange(BluetoothStatus bluetoothStatus) {
+
+            }
+
+            @Override
+            public void onDeviceName(String s) {
+
+            }
+
+            @Override
+            public void onToast(String s) {
+                Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+                Log.d("onToast", s);
+
+            }
+
+            @Override
+            public void onDataWrite(byte[] bytes) {
+
+            }
+        });
     }
 
 
@@ -48,16 +127,14 @@ public class MainActivity extends AppCompatActivity implements BlueToothCallback
 
                 switch (id){
                     case R.id.scan:
-                        Toast.makeText(getApplicationContext(),"Scan",Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.farmerHelp:
-                        Toast.makeText(getApplicationContext(),"FarmerHelp",Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawers();
+                        openWebHelp();
                         break;
                     case R.id.logout:
                         finish();
@@ -87,31 +164,11 @@ public class MainActivity extends AppCompatActivity implements BlueToothCallback
         actionBarDrawerToggle.syncState();
     }
 
-    @Override
-    public void scannedDevices(JSONArray jsonArray) {
-        Log.d("bluetooth:", jsonArray.toString());
+    private void openWebHelp() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction bt = fm.beginTransaction();
+        bt.replace(R.id.frameContainer, WebHelpFragment.newInstance());
+        bt.commit();
     }
 
-    @Override
-    public void connectedDevice(boolean status) {
-
-    }
-
-    @Override
-    public void readData(String data) {
-
-    }
-
-    @Override
-    public void error(String error) {
-
-    }
-
-    public void scanDevice(){
-        try {
-            bluetoothSerial.execute(this,BluetoothSerial.DISCOVER_UNPAIRED, new String[]{""},this);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -9,6 +9,11 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frameContainer"></FrameLayout>
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,11 +31,14 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary" />
 
+
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_main" />
 
+
     </android.support.design.widget.CoordinatorLayout>
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
@@ -39,5 +47,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_navigation"/>
+
 
 </android.support.v4.widget.DrawerLayout>
