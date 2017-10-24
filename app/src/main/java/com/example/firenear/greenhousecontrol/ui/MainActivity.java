@@ -15,9 +15,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firenear.greenhousecontrol.GreenHouseApp;
 import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.bluetooth.BlueToothCallback;
 import com.example.firenear.greenhousecontrol.bluetooth.BluetoothSerial;
+import com.example.firenear.greenhousecontrol.ui.scan.ScanFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
@@ -47,22 +49,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initNavigationDrawer();
-        bluetoothSerial = BluetoothSerial.newInstance();
 
-        BluetoothConfiguration config = new BluetoothConfiguration();
-        config.context = getApplicationContext();
-        config.bluetoothServiceClass = BluetoothClassicService.class; // BluetoothClassicService.class or BluetoothLeService.class
-        config.bufferSize = 1024;
-        config.characterDelimiter = '\n';
-        config.deviceName = "GreenHouseControl";
-        config.callListenersInMainThread = true;
 
-        // Bluetooth Classic
-        config.uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
-        BluetoothService.init(config);
-
-        final BluetoothService service = BluetoothService.getDefaultInstance();
+      /* final BluetoothService service = new GreenHouseApp().getBlueSerialDefault(this);
 
         service.startScan();
 
@@ -112,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataWrite(byte[] bytes) {
 
             }
-        });
+        });*/
     }
 
 
@@ -128,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (id){
                     case R.id.scan:
                         drawerLayout.closeDrawers();
+                        openScanScreen();
                         break;
                     case R.id.home:
                         drawerLayout.closeDrawers();
@@ -168,6 +159,13 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction bt = fm.beginTransaction();
         bt.replace(R.id.frameContainer, WebHelpFragment.newInstance());
+        bt.commit();
+    }
+
+    private void openScanScreen(){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction bt = fm.beginTransaction();
+        bt.replace(R.id.frameContainer, ScanFragment.newInstance());
         bt.commit();
     }
 
