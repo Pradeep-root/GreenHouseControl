@@ -31,7 +31,6 @@
     </LinearLayout>
 
 
-
     <ListView
         android:layout_gravity="start"
         android:background="#FFFFFF"

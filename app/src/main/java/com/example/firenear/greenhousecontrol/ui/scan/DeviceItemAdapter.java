@@ -33,8 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.firenear.greenhousecontrol.GreenHouseApp;
 import com.example.firenear.greenhousecontrol.R;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothDeviceDecorator;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,11 +52,13 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.Vi
     private final Context mContext;
     private final List<BluetoothDeviceDecorator> mDevices;
     private final LayoutInflater mInflater;
+    private final BluetoothService service;
 
 
     public DeviceItemAdapter(Context context, List<BluetoothDevice> devices) {
         super();
         mContext = context;
+        service  = new GreenHouseApp().getBlueSerialDefault(context);
         mDevices = decorateDevices(devices);
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -85,6 +89,12 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.Vi
         holder.tvAddress.setText(device.getAddress());
         holder.tvRSSI.setText(device.getRSSI() + "");
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               service.connect(device.getDevice());
+            }
+        });
     }
 
     @Override

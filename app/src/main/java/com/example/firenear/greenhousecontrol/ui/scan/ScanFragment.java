@@ -5,15 +5,18 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.firenear.greenhousecontrol.GreenHouseApp;
 import com.example.firenear.greenhousecontrol.R;
+import com.example.firenear.greenhousecontrol.ui.operate.OperateFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpListAdapter;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothDeviceDecorator;
@@ -29,7 +32,6 @@ import java.util.Arrays;
 public class ScanFragment extends Fragment {
     BluetoothService service;
     RecyclerView recyclerView;
-    ScanAdapter scanAdapter;
     private ArrayList<BluetoothDevice> bluetoothDevices;
     private BluetoothAdapter mBluetoothAdapter;
     private DeviceItemAdapter mAdapter;
@@ -82,7 +84,42 @@ public class ScanFragment extends Fragment {
 
             @Override
             public void onStopScan() {
-               //loadData(bluetoothDevices);
+
+            }
+        });
+
+        service.setOnEventCallback(new BluetoothService.OnBluetoothEventCallback() {
+            @Override
+            public void onDataRead(byte[] bytes, int i) {
+
+            }
+
+            @Override
+            public void onStatusChange(BluetoothStatus bluetoothStatus) {
+                Log.d("onStatusChange ", "onDeviceDiscovered: ");
+                if(bluetoothStatus == BluetoothStatus.CONNECTED){
+                    Toast.makeText(getActivity(), "Connected", Toast.LENGTH_SHORT).show();
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, new OperateFragment()).commit();
+                }else if(bluetoothStatus == BluetoothStatus.CONNECTING){
+                    Toast.makeText(getActivity(), "Connecting...", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onDeviceName(String s) {
+
+            }
+
+            @Override
+            public void onToast(String s) {
+
+            }
+
+            @Override
+            public void onDataWrite(byte[] bytes) {
+
             }
         });
     }
