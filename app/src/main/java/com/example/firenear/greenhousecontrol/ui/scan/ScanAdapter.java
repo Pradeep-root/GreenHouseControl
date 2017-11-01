@@ -27,7 +27,7 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.Holder> {
     @Override
     public ScanAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.device_item, parent, false);
+                .inflate(R.layout.device_item1, parent, false);
         return new Holder(itemView);
     }
 

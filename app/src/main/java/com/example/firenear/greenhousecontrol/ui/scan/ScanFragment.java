@@ -1,6 +1,7 @@
 package com.example.firenear.greenhousecontrol.ui.scan;
 
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,12 @@ import com.example.firenear.greenhousecontrol.GreenHouseApp;
 import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpListAdapter;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothDeviceDecorator;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +31,8 @@ public class ScanFragment extends Fragment {
     RecyclerView recyclerView;
     ScanAdapter scanAdapter;
     private ArrayList<BluetoothDevice> bluetoothDevices;
+    private BluetoothAdapter mBluetoothAdapter;
+    private DeviceItemAdapter mAdapter;
 
     public ScanFragment() {
         // Required empty public constructor
@@ -45,6 +50,7 @@ public class ScanFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_scan, container, false);
         init(rootView);
+        loadData();
         scanBluetooth();
         return rootView;
     }
@@ -55,9 +61,18 @@ public class ScanFragment extends Fragment {
 
         service.setOnScanCallback(new BluetoothService.OnBluetoothScanCallback() {
             @Override
-            public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int i) {
-                Log.d("onDeviceDiscovered", bluetoothDevice.getName()+" "+bluetoothDevice.getAddress());
-                bluetoothDevices.add(bluetoothDevice);
+            public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int rssi) {
+                Log.d("onDeviceDiscovered ", "onDeviceDiscovered: " + bluetoothDevice.getName() + " - " + bluetoothDevice.getAddress() + " - " + Arrays.toString(bluetoothDevice.getUuids()));
+                BluetoothDeviceDecorator dv = new BluetoothDeviceDecorator(bluetoothDevice, rssi);
+                int index = mAdapter.getDevices().indexOf(dv);
+                if (index < 0) {
+                    mAdapter.getDevices().add(dv);
+                    mAdapter.notifyItemInserted(mAdapter.getDevices().size() - 1);
+                } else {
+                    mAdapter.getDevices().get(index).setDevice(bluetoothDevice);
+                    mAdapter.getDevices().get(index).setRSSI(rssi);
+                    mAdapter.notifyItemChanged(index);
+                }
             }
 
             @Override
@@ -67,8 +82,7 @@ public class ScanFragment extends Fragment {
 
             @Override
             public void onStopScan() {
-                Log.d("onStopScan", "onStopScan");
-                loadData(bluetoothDevices);
+               //loadData(bluetoothDevices);
             }
         });
     }
@@ -77,11 +91,12 @@ public class ScanFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_scan_list);
     }
 
-    public void loadData(ArrayList<BluetoothDevice> bluetoothDevices){
-        scanAdapter = new ScanAdapter(bluetoothDevices);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(scanAdapter);
-    }
+    public void loadData(){
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(lm);
+        mAdapter = new DeviceItemAdapter(getActivity(), mBluetoothAdapter.getBondedDevices());
+        recyclerView.setAdapter(mAdapter);
 
+    }
 }

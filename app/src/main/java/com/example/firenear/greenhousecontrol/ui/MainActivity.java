@@ -2,6 +2,7 @@ package com.example.firenear.greenhousecontrol.ui;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.example.firenear.greenhousecontrol.GreenHouseApp;
 import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.bluetooth.BlueToothCallback;
 import com.example.firenear.greenhousecontrol.bluetooth.BluetoothSerial;
+import com.example.firenear.greenhousecontrol.model.DataModel;
 import com.example.firenear.greenhousecontrol.ui.scan.ScanFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
@@ -38,135 +42,116 @@ import co.lujun.lmbluetoothsdk.base.BluetoothListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BluetoothSerial bluetoothSerial;
-    private DrawerLayout drawerLayout;
-    private Toolbar toolbar;
+    private String[] mNavigationDrawerItemTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    Toolbar toolbar;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mTitle = mDrawerTitle = getTitle();
+        mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        setupToolbar();
+
+        DataModel[] drawerItem = new DataModel[3];
+
+        drawerItem[0] = new DataModel(R.drawable.ic_find_replace_black_24dp, "Bluetooth");
+        drawerItem[1] = new DataModel(R.drawable.ic_home_black_24dp, "Home");
+        drawerItem[2] = new DataModel(R.drawable.ic_web_black_24dp, "Web Help");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.list_view_item_row, drawerItem);
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupDrawerToggle();
+
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+    }
+
+    private void selectItem(int position) {
+
+        Fragment fragment = null;
+
+        switch (position) {
+            case 0:
+                fragment = new ScanFragment();
+                break;
+            case 1:
+               // fragment = new ();
+                break;
+            case 2:
+                fragment = new WebHelpFragment();
+                break;
+
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            setTitle(mNavigationDrawerItemTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+
+        } else {
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    void setupToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        initNavigationDrawer();
-
-
-
-      /* final BluetoothService service = new GreenHouseApp().getBlueSerialDefault(this);
-
-        service.startScan();
-
-        service.setOnScanCallback(new BluetoothService.OnBluetoothScanCallback() {
-            @Override
-            public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int i) {
-                Log.d("onDeviceDiscovered", bluetoothDevice.getName());
-                service.connect(bluetoothDevice);
-
-            }
-
-            @Override
-            public void onStartScan() {
-                Log.d("onDeviceDiscovered", "onDeviceDiscovered");
-            }
-
-            @Override
-            public void onStopScan() {
-                Log.d("onDeviceDiscovered", "onDeviceDiscovered");
-            }
-        });
-
-        service.setOnEventCallback(new BluetoothService.OnBluetoothEventCallback() {
-            @Override
-            public void onDataRead(byte[] bytes, int i) {
-
-            }
-
-            @Override
-            public void onStatusChange(BluetoothStatus bluetoothStatus) {
-
-            }
-
-            @Override
-            public void onDeviceName(String s) {
-
-            }
-
-            @Override
-            public void onToast(String s) {
-                Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
-                Log.d("onToast", s);
-
-            }
-
-            @Override
-            public void onDataWrite(byte[] bytes) {
-
-            }
-        });*/
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-
-    public void initNavigationDrawer() {
-
-        NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                int id = menuItem.getItemId();
-
-                switch (id){
-                    case R.id.scan:
-                        drawerLayout.closeDrawers();
-                        openScanScreen();
-                        break;
-                    case R.id.home:
-                        drawerLayout.closeDrawers();
-                        break;
-                    case R.id.farmerHelp:
-                        drawerLayout.closeDrawers();
-                        openWebHelp();
-                        break;
-                    case R.id.logout:
-                        finish();
-
-                }
-                return true;
-            }
-        });
-        View header = navigationView.getHeaderView(0);
-        TextView tv_email = (TextView)header.findViewById(R.id.tv_email);
-        tv_email.setText("987654321");
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
-
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawer_open,R.string.drawer_close){
-
-            @Override
-            public void onDrawerClosed(View v){
-                super.onDrawerClosed(v);
-            }
-
-            @Override
-            public void onDrawerOpened(View v) {
-                super.onDrawerOpened(v);
-            }
-        };
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+    void setupDrawerToggle(){
+        mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name, R.string.app_name);
+        //This is necessary to change the icon of the Drawer Toggle upon state change.
+        mDrawerToggle.syncState();
     }
-
-    private void openWebHelp() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction bt = fm.beginTransaction();
-        bt.replace(R.id.frameContainer, WebHelpFragment.newInstance());
-        bt.commit();
-    }
-
-    private void openScanScreen(){
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction bt = fm.beginTransaction();
-        bt.replace(R.id.frameContainer, ScanFragment.newInstance());
-        bt.commit();
-    }
-
 }
+
