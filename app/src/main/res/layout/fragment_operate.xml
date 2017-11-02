@@ -1,13 +1,222 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.firenear.greenhousecontrol.ui.operate.OperateFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        android:id="@+id/temperatureCart"
+        app:cardUseCompatPadding="true">
 
-</FrameLayout>
+       <RelativeLayout
+           android:layout_gravity="center"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:id="@+id/textTemperatureLbl"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="20sp"
+               android:text="Temperature"/>
+
+           <TextView
+               android:layout_below="@+id/textTemperatureLbl"
+               android:id="@+id/textTemperature"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="50 'c"
+               android:layout_centerInParent="true"
+               android:textSize="24sp" />
+       </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        android:id="@+id/humidityCart"
+        android:layout_below="@+id/temperatureCart"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textHumidityLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Humidity"/>
+
+            <TextView
+                android:layout_below="@+id/textHumidityLbl"
+                android:id="@+id/textHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50%"
+                android:layout_centerInParent="true"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        android:id="@+id/soilCart"
+        android:layout_below="@+id/humidityCart"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textSoilLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Soil Moisture"/>
+
+            <TextView
+                android:layout_below="@+id/textSoilLbl"
+                android:id="@+id/textSoil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50%"
+                android:layout_centerInParent="true"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:id="@+id/viewLine"
+        android:background="@color/colorAccent"
+        android:layout_below="@+id/soilCart"/>
+
+
+<RelativeLayout
+    android:layout_marginTop="2dp"
+    android:layout_below="@+id/viewLine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Switch
+        android:layout_alignParentRight="true"
+        android:id="@+id/switchAutoManual"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+   <RelativeLayout
+       android:layout_marginTop="24dp"
+       android:layout_below="@+id/switchAutoManual"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+
+       <LinearLayout
+           android:layout_marginLeft="48dp"
+           android:id="@+id/linearFan"
+           android:orientation="vertical"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+           <ImageView
+               android:id="@+id/imgFan"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:src="@drawable/img_fan"/>
+
+           <Switch
+               android:id="@+id/switchFan"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+
+      <LinearLayout
+          android:layout_alignParentRight="true"
+          android:orientation="vertical"
+          android:id="@+id/linearLight"
+          android:layout_marginRight="48dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+
+          <ImageView
+              android:id="@+id/imgLight"
+              android:layout_width="50dp"
+              android:layout_height="50dp"
+              android:src="@drawable/img_light"/>
+
+          <Switch
+              android:id="@+id/switchLight"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+      </LinearLayout>
+
+       <LinearLayout
+           android:orientation="vertical"
+           android:id="@+id/linearPump"
+           android:layout_marginTop="16dp"
+           android:layout_marginLeft="48dp"
+           android:layout_below="@+id/linearLight"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <ImageView
+               android:id="@+id/imgPump"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:src="@drawable/img_water_pump"/>
+
+           <Switch
+               android:id="@+id/switchPump"
+               android:layout_below="@+id/switchFan"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_marginTop="16dp"
+           android:orientation="vertical"
+           android:layout_marginRight="48dp"
+           android:layout_alignParentRight="true"
+           android:layout_below="@+id/linearLight"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <ImageView
+               android:id="@+id/imgFlip"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:src="@drawable/img_flip"/>
+           <Switch
+               android:id="@+id/switchFlip"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+
+   </RelativeLayout>
+
+
+</RelativeLayout>
+
+</RelativeLayout>
