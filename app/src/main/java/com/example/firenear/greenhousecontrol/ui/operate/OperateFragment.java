@@ -59,6 +59,15 @@ public class OperateFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
               if(isChecked){
                   service.write("*".getBytes());
+                  aSwitchLight.setEnabled(true);
+                  aSwitchFan.setEnabled(true);
+                  aSwitchFlip.setEnabled(true);
+                  aSwitchPump.setEnabled(true);
+              }else {
+                  aSwitchLight.setEnabled(false);
+                  aSwitchFan.setEnabled(false);
+                  aSwitchFlip.setEnabled(false);
+                  aSwitchPump.setEnabled(false);
               }
             }
         });
@@ -153,6 +162,11 @@ public class OperateFragment extends Fragment {
         aSwitchFlip = (Switch) rootView.findViewById(R.id.switchFlip);
         aSwitchLight = (Switch) rootView.findViewById(R.id.switchLight);
         aSwitchPump = (Switch) rootView.findViewById(R.id.switchPump);
+
+        aSwitchLight.setEnabled(false);
+        aSwitchFan.setEnabled(false);
+        aSwitchFlip.setEnabled(false);
+        aSwitchPump.setEnabled(false);
     }
 
     private void event() {
@@ -219,12 +233,12 @@ public class OperateFragment extends Fragment {
 
             @Override
             public void onDataWrite(byte[] bytes) {
-                try {
+                /*try {+
                     String text = new String(bytes, "UTF-8");
                     Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         });

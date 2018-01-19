@@ -43,6 +43,10 @@ public class WebHelpFragment extends Fragment {
 
     private void loadData() {
         ArrayList<WebLink> webLinks = new ArrayList<>();
+        WebLink webLink1 = new WebLink();
+        webLink1.setTitle("Kisan Help line");
+        webLink1.setUrl("http://www.farmer.gov.in/");
+        webLinks.add(webLink1);
         WebHelpListAdapter webHelpListAdapter = new WebHelpListAdapter(webLinks);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);

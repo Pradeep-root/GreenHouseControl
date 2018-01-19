@@ -142,8 +142,8 @@
            android:layout_height="wrap_content">
            <ImageView
                android:id="@+id/imgFan"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:layout_width="60dp"
+               android:layout_height="60dp"
                android:src="@drawable/img_fan"/>
 
            <Switch
@@ -162,8 +162,8 @@
 
           <ImageView
               android:id="@+id/imgLight"
-              android:layout_width="50dp"
-              android:layout_height="50dp"
+              android:layout_width="60dp"
+              android:layout_height="60dp"
               android:src="@drawable/img_light"/>
 
           <Switch
@@ -183,8 +183,8 @@
 
            <ImageView
                android:id="@+id/imgPump"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:layout_width="60dp"
+               android:layout_height="60dp"
                android:src="@drawable/img_water_pump"/>
 
            <Switch
@@ -205,8 +205,8 @@
 
            <ImageView
                android:id="@+id/imgFlip"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:layout_width="60dp"
+               android:layout_height="60dp"
                android:src="@drawable/img_flip"/>
            <Switch
                android:id="@+id/switchFlip"

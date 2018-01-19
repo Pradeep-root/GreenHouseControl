@@ -1,10 +1,12 @@
 package com.example.firenear.greenhousecontrol.model;
 
+import java.io.Serializable;
+
 /**
  * Created by pradeep on 16/10/17.
  */
 
-public class WebLink {
+public class WebLink implements Serializable {
 
     private String title;
     private String basicInfo;

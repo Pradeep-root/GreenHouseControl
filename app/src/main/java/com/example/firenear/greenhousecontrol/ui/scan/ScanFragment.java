@@ -61,6 +61,7 @@ public class ScanFragment extends Fragment {
        service  = new GreenHouseApp().getBlueSerialDefault(getContext());
         service.startScan();
 
+
         service.setOnScanCallback(new BluetoothService.OnBluetoothScanCallback() {
             @Override
             public void onDeviceDiscovered(BluetoothDevice bluetoothDevice, int rssi) {
