@@ -46,6 +46,7 @@ public class WebHelpListAdapter extends RecyclerView.Adapter<WebHelpListAdapter.
                context.startActivity(intent);
            }
        });
+        holder.textViewTitle.setText(webLink.getTitle());
     }
 
     @Override
