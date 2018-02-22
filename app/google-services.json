@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "494093057537",
+    "firebase_url": "https://greenhousecontrol-c90fe.firebaseio.com",
+    "project_id": "greenhousecontrol-c90fe",
+    "storage_bucket": "greenhousecontrol-c90fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494093057537:android:d6001a31f018c67a",
+        "android_client_info": {
+          "package_name": "com.example.firenear.greenhousecontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494093057537-ek74klujkc454lm2tok8sa1bieumlmfi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firenear.greenhousecontrol",
+            "certificate_hash": "2132914a4766e2e661e4b07d24664503d80f7f5a"
+          }
+        },
+        {
+          "client_id": "494093057537-kfsqblbb2l6j90aqe484sa3agao10rn1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26GWOa-XRLc37FbkyaAtzo03vTN2LjFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494093057537-kfsqblbb2l6j90aqe484sa3agao10rn1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
