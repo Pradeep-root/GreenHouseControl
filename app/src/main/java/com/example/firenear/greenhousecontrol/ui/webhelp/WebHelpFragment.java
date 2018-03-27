@@ -47,6 +47,33 @@ public class WebHelpFragment extends Fragment {
         webLink1.setTitle("Kisan Help line");
         webLink1.setUrl("http://www.farmer.gov.in/");
         webLinks.add(webLink1);
+
+        WebLink webLink2 = new WebLink();
+        webLink2.setTitle("Food and Agricultural Organisation.");
+        webLink2.setUrl("http://fao.org/");
+        webLinks.add(webLink2);
+
+        WebLink webLink3 = new WebLink();
+        webLink3.setTitle("Soil and Land Use Survey of India's official ");
+        webLink3.setUrl("http://slusi.dacnet.nic.in/");
+        webLinks.add(webLink3);
+
+        WebLink webLink4 = new WebLink();
+        webLink4.setTitle("Wikipedia like encyclopedia");
+        webLink4.setUrl("http://www.wikifarming.org/");
+        webLinks.add(webLink4);
+
+        WebLink webLink5 = new WebLink();
+        webLink5.setTitle("pesticides");
+        webLink5.setUrl("http://pesticidewatch.org/");
+        webLinks.add(webLink5);
+
+        WebLink webLink6 = new WebLink();
+        webLink6.setTitle("Agriculture and Cooperation");
+        webLink6.setUrl("http://agricoop.nic.in/");
+        webLinks.add(webLink6);
+
+
         WebHelpListAdapter webHelpListAdapter = new WebHelpListAdapter(webLinks);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
