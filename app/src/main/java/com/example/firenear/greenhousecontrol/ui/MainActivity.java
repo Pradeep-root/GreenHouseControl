@@ -1,6 +1,8 @@
 package com.example.firenear.greenhousecontrol.ui;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +25,7 @@ import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.bluetooth.BlueToothCallback;
 import com.example.firenear.greenhousecontrol.bluetooth.BluetoothSerial;
 import com.example.firenear.greenhousecontrol.model.DataModel;
+import com.example.firenear.greenhousecontrol.ui.login.RegisterActivity;
 import com.example.firenear.greenhousecontrol.ui.scan.ScanFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
@@ -61,11 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         setupToolbar();
 
-        DataModel[] drawerItem = new DataModel[3];
+        DataModel[] drawerItem = new DataModel[4];
 
         drawerItem[0] = new DataModel(R.drawable.ic_find_replace_black_24dp, "Scan");
         drawerItem[1] = new DataModel(R.drawable.ic_home_black_24dp, "Home");
         drawerItem[2] = new DataModel(R.drawable.ic_web_black_24dp, "Web Help");
+        drawerItem[3] = new DataModel(R.drawable.ic_web_black_24dp, "Logout");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -102,6 +106,15 @@ public class MainActivity extends AppCompatActivity {
             case 2:
                 fragment = new WebHelpFragment();
                 break;
+            case 3:
+                SharedPreferences sharedPreferences = getSharedPreferences("LoginPersi",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("LoginStatus");
+                editor.remove("Number");
+                editor.commit();
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
 
             default:
                 break;
