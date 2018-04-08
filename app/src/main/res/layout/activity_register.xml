@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Request OTP"/>
         <TextView
+            android:visibility="gone"
             android:id="@+id/txt_resend_otp"
             android:textSize="16dp"
             android:layout_marginLeft="16dp"

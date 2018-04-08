@@ -25,6 +25,7 @@ import com.example.firenear.greenhousecontrol.R;
 import com.example.firenear.greenhousecontrol.bluetooth.BlueToothCallback;
 import com.example.firenear.greenhousecontrol.bluetooth.BluetoothSerial;
 import com.example.firenear.greenhousecontrol.model.DataModel;
+import com.example.firenear.greenhousecontrol.ui.automode.AutoModeFragment;
 import com.example.firenear.greenhousecontrol.ui.login.RegisterActivity;
 import com.example.firenear.greenhousecontrol.ui.scan.ScanFragment;
 import com.example.firenear.greenhousecontrol.ui.webhelp.WebHelpFragment;
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                // fragment = new ();
+                fragment = new AutoModeFragment();
                 break;
             case 2:
                 fragment = new WebHelpFragment();
