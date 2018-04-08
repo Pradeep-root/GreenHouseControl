@@ -6,9 +6,6 @@
     tools:context="com.example.firenear.greenhousecontrol.ui.automode.AutoModeFragment">
 
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
 
     <Button
         android:layout_width="match_parent"

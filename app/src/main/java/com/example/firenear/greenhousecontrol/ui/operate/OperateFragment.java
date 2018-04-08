@@ -1,6 +1,7 @@
 package com.example.firenear.greenhousecontrol.ui.operate;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,6 +36,9 @@ public class OperateFragment extends Fragment {
     private Switch aSwitchPump;
     private Switch aSwitchFlip;
     private String switchCode = "0000";
+    private SharedPreferences sharedPreferences;
+    boolean autoMode = false;
+    private TextView textAutoMode;
 
     public OperateFragment() {
         // Required empty public constructor
@@ -45,10 +49,13 @@ public class OperateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        sharedPreferences = getActivity().getSharedPreferences("LoginPersi",getActivity().MODE_PRIVATE);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_operate, container, false);
         init(rootView);
         event();
+        textAutoMode.setText(sharedPreferences.getString("AutoType",""));
         action();
         return rootView;
     }
@@ -57,17 +64,21 @@ public class OperateFragment extends Fragment {
         aSwitchAutoManual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                autoMode = isChecked;
               if(isChecked){
                   service.write("*".getBytes());
                   aSwitchLight.setEnabled(true);
                   aSwitchFan.setEnabled(true);
                   aSwitchFlip.setEnabled(true);
                   aSwitchPump.setEnabled(true);
+                  textAutoMode.setVisibility(View.INVISIBLE);
               }else {
                   aSwitchLight.setEnabled(false);
                   aSwitchFan.setEnabled(false);
                   aSwitchFlip.setEnabled(false);
                   aSwitchPump.setEnabled(false);
+                  textAutoMode.setVisibility(View.VISIBLE);
+
               }
             }
         });
@@ -162,6 +173,7 @@ public class OperateFragment extends Fragment {
         aSwitchFlip = (Switch) rootView.findViewById(R.id.switchFlip);
         aSwitchLight = (Switch) rootView.findViewById(R.id.switchLight);
         aSwitchPump = (Switch) rootView.findViewById(R.id.switchPump);
+        textAutoMode = (TextView) rootView.findViewById(R.id.textAutomode);
 
         aSwitchLight.setEnabled(false);
         aSwitchFan.setEnabled(false);
@@ -183,6 +195,18 @@ public class OperateFragment extends Fragment {
                         textSoilMoisture.setText(sensorValues[0]+"%");
                         textHumidity.setText(sensorValues[1]+"%");
                         textTemperature.setText(sensorValues[2]+" 'C");
+                        int temp =  sharedPreferences.getInt("Temp",0);
+                        int hum = sharedPreferences.getInt("Hum", 0);
+                        int mos = sharedPreferences.getInt("Mos", 0);
+
+                        if(autoMode){
+                            if(Integer.parseInt(sensorValues[0]) > temp){
+
+                            }
+
+
+                        }
+
                     }else if(text.contains("a")) {
                         switchCode = text.replace("a", "").replace("e", "");
                         if(switchCode.charAt(0) == '0'){

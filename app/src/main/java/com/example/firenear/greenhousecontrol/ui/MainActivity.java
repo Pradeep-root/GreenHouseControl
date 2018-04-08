@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         DataModel[] drawerItem = new DataModel[4];
 
         drawerItem[0] = new DataModel(R.drawable.ic_find_replace_black_24dp, "Scan");
-        drawerItem[1] = new DataModel(R.drawable.ic_home_black_24dp, "Home");
+        drawerItem[1] = new DataModel(R.drawable.ic_home_black_24dp, "Auto Mode");
         drawerItem[2] = new DataModel(R.drawable.ic_web_black_24dp, "Web Help");
         drawerItem[3] = new DataModel(R.drawable.ic_web_black_24dp, "Logout");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
